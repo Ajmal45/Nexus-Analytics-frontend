@@ -1,42 +1,58 @@
-import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
-import Login from './components/Login'
-import Dashboard from './components/Dashboard'
-import UserList from './components/UserList'
-import UserDetails from './components/UserDetails'
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
-// A wrapper for protected routes
-function ProtectedRoute({ children }) {
-  const token = localStorage.getItem('adminToken');
-  if (!token) {
-    return <Navigate to="/" replace />;
-  }
-  return children;
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Layout from './components/Layout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import LeadManagement from './pages/admin/LeadManagement';
+import UserManagement from './pages/admin/UserManagement';
+import ClientDashboard from './pages/user/ClientDashboard';
+import { ThemeProvider, useTheme } from './components/ThemeProvider';
+
+function AppShell() {
+  const { theme } = useTheme();
+
+  return (
+    <>
+      <Toaster position="top-right" toastOptions={{ 
+        style: {
+          background: theme === 'dark' ? '#111827' : '#0f172a',
+          color: '#fff',
+          borderRadius: '16px'
+        }
+      }} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin" element={<Layout allowedRole="admin" />}>
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="leads" element={<LeadManagement />} />
+            <Route path="users" element={<UserManagement />} />
+          </Route>
+
+          {/* User Routes */}
+          <Route path="/user" element={<Layout allowedRole="user" />}>
+            <Route path="dashboard" element={<ClientDashboard />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
 }
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
-        <Route path="/users" element={
-          <ProtectedRoute>
-            <UserList />
-          </ProtectedRoute>
-        } />
-        <Route path="/users/:id" element={
-          <ProtectedRoute>
-            <UserDetails />
-          </ProtectedRoute>
-        } />
-      </Routes>
-    </Router>
-  )
+    <ThemeProvider>
+      <AppShell />
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
