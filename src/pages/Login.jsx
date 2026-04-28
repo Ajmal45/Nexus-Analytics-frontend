@@ -12,7 +12,8 @@ export default function Login() {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: 'user'
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ export default function Login() {
         toast.success('Welcome back!');
         
         if (data.user.role === 'admin') navigate('/admin/dashboard');
+        else if (data.user.role === 'lead') navigate('/lead/dashboard');
         else navigate('/user/dashboard');
         
       } else {
@@ -49,15 +51,16 @@ export default function Login() {
         const { data } = await api.post('/auth/register', {
           name: formData.name,
           email: formData.email,
-          password: formData.password
+          password: formData.password,
+          role: formData.role
         });
 
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         toast.success('Account created successfully!');
         
-        // New registrants default to user role
-        navigate('/user/dashboard');
+        if (data.user.role === 'lead') navigate('/lead/dashboard');
+        else navigate('/user/dashboard');
       }
     } catch (error) {
       toast.error(error.response?.data?.error || 'Authentication failed');
@@ -110,6 +113,7 @@ export default function Login() {
 
           <form onSubmit={handleAuth} className="space-y-4">
             {!isLogin && (
+              <>
               <div>
                 <div className="group relative">
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] transition-colors group-focus-within:text-[var(--brand)]" size={20} />
@@ -124,6 +128,19 @@ export default function Login() {
                   />
                 </div>
               </div>
+              <div>
+                <label className="mb-2 block text-sm font-medium text-[var(--text-secondary)]">Register As</label>
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-4 py-3 text-[var(--text-primary)] transition-all focus:border-[var(--brand)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-soft)]"
+                >
+                  <option value="user">User</option>
+                  <option value="lead">Lead</option>
+                </select>
+              </div>
+              </>
             )}
 
             <div>

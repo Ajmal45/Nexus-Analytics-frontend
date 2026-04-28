@@ -9,6 +9,8 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import LeadManagement from './pages/admin/LeadManagement';
 import UserManagement from './pages/admin/UserManagement';
 import ClientDashboard from './pages/user/ClientDashboard';
+import Profile from './pages/user/Profile';
+import LeadWorkspace from './pages/lead/LeadWorkspace';
 import { ThemeProvider, useTheme } from './components/ThemeProvider';
 
 function AppShell() {
@@ -38,6 +40,13 @@ function AppShell() {
           {/* User Routes */}
           <Route path="/user" element={<Layout allowedRole="user" />}>
             <Route path="dashboard" element={<ClientDashboard />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
+
+          {/* Lead Routes */}
+          <Route path="/lead" element={<Layout allowedRole="lead" />}>
+            <Route path="dashboard" element={<LeadWorkspace />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

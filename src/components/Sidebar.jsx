@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, UserSquare2, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, UserSquare2, LogOut, BriefcaseBusiness } from 'lucide-react';
 
-export default function Sidebar({ role }) {
+export default function Sidebar({ role, mobileOpen = false, onClose = () => {} }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -21,10 +21,19 @@ export default function Sidebar({ role }) {
     { to: '/user/dashboard', icon: LayoutDashboard, label: 'Client Section' },
   ];
 
-  const links = role === 'admin' ? adminLinks : userLinks;
+  const leadLinks = [
+    { to: '/lead/dashboard', icon: BriefcaseBusiness, label: 'Lead Workspace' },
+  ];
+
+  const links = role === 'admin' ? adminLinks : role === 'lead' ? leadLinks : userLinks;
 
   return (
-    <div className="flex h-screen w-72 flex-col border-r border-[var(--sidebar-border)] bg-[var(--sidebar-bg)] text-[var(--sidebar-text)] shadow-2xl">
+    <>
+    <div
+      className={`fixed inset-0 z-30 bg-black/40 transition-opacity md:hidden ${mobileOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+      onClick={onClose}
+    />
+    <div className={`fixed inset-y-0 left-0 z-40 flex h-screen w-[84vw] max-w-72 flex-col border-r border-[var(--sidebar-border)] bg-[var(--sidebar-bg)] text-[var(--sidebar-text)] shadow-2xl transition-transform md:static md:w-72 md:translate-x-0 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
       <div className="border-b border-[var(--sidebar-border)] px-6 pb-4 pt-7">
         <h1 className="bg-gradient-to-r from-[#7dd3fc] via-[#60a5fa] to-[#34d399] bg-clip-text text-2xl font-bold text-transparent">Nexus</h1>
         <p className="mt-1 text-sm uppercase tracking-[0.24em] text-[var(--sidebar-muted)]">Analytics</p>
@@ -37,6 +46,7 @@ export default function Sidebar({ role }) {
             <NavLink
               key={link.to}
               to={link.to}
+              onClick={onClose}
               className={({ isActive }) =>
                 `flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-300 ${
                   isActive
@@ -62,5 +72,6 @@ export default function Sidebar({ role }) {
         </button>
       </div>
     </div>
+    </>
   );
 }
