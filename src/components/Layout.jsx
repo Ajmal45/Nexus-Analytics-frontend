@@ -22,7 +22,11 @@ export default function Layout({ allowedRole }) {
   return (
     <div className="flex h-screen overflow-hidden bg-[var(--app-bg)] text-[var(--text-primary)]">
       <Sidebar role={user.role} mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
-      <main className="flex-1 overflow-y-auto bg-[var(--app-bg)]">
+      <main className="relative flex-1 overflow-y-auto bg-[var(--app-bg)]">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-[8%] top-0 h-72 w-72 rounded-full bg-[var(--brand-soft)] blur-[120px]" />
+          <div className="absolute bottom-[-8%] right-[6%] h-80 w-80 rounded-full bg-[var(--accent-soft)] blur-[130px]" />
+        </div>
         <div className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-[var(--border-soft)] bg-[color:var(--app-bg)]/90 px-4 py-4 backdrop-blur sm:px-6 xl:px-8">
           <button
             type="button"
@@ -44,7 +48,7 @@ export default function Layout({ allowedRole }) {
           <ThemeToggle />
           </div>
         </div>
-        <div className="p-4 sm:p-6 xl:p-8">
+        <div className="relative p-4 sm:p-6 xl:p-8">
         <Outlet />
         </div>
       </main>

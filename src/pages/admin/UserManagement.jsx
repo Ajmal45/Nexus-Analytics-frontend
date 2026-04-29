@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import api from '../../api';
 import toast from 'react-hot-toast';
 import { Mail, Clock, ShieldCheck } from 'lucide-react';
+import PageHero from '../../components/PageHero';
+
+const usersImage = 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80';
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -24,24 +27,31 @@ export default function UserManagement() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Users & Clients</h1>
-        <p className="text-gray-500">Manage all registered entities on the platform</p>
-      </div>
+      <PageHero
+        eyebrow="Users and Clients"
+        title="Review platform members, client requests, and delivery expectations in one place."
+        description="See who joined the system, what each client needs, and update requirement statuses before the next lead assignment happens."
+        image={usersImage}
+        stats={[
+          { label: 'users', value: String(users.length) },
+          { label: 'requests', value: String(requests.length) },
+          { label: 'view', value: 'Admin only' }
+        ]}
+      />
 
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="overflow-hidden rounded-[1.9rem] border border-[var(--border-strong)] bg-[var(--panel)] shadow-sm">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-50 border-b border-gray-100 text-sm font-medium text-gray-500">
+            <tr className="border-b border-[var(--border-soft)] bg-[var(--surface)]/80 text-sm font-medium text-[var(--text-muted)]">
               <th className="py-4 px-6">Name</th>
               <th className="py-4 px-6">Email</th>
               <th className="py-4 px-6">Role</th>
               <th className="py-4 px-6">Joined Date</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50 text-sm text-gray-700 font-medium">
+          <tbody className="divide-y divide-[var(--border-soft)] text-sm font-medium text-[var(--text-primary)]">
             {users.map(u => (
-              <tr key={u._id} className="hover:bg-gray-50/50 transition-colors">
+              <tr key={u._id} className="transition-colors hover:bg-[var(--brand-soft)]/35">
                 <td className="py-4 px-6">
                   <div className="flex items-center gap-3">
                     <div className="h-8 w-8 rounded bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-600 flex items-center justify-center font-bold">
@@ -51,7 +61,7 @@ export default function UserManagement() {
                   </div>
                 </td>
                 <td className="py-4 px-6">
-                  <div className="flex items-center gap-2 text-gray-500">
+                  <div className="flex items-center gap-2 text-[var(--text-secondary)]">
                     <Mail size={16} />
                     {u.email}
                   </div>
@@ -64,7 +74,7 @@ export default function UserManagement() {
                   </span>
                 </td>
                 <td className="py-4 px-6">
-                  <div className="flex items-center gap-2 text-gray-500">
+                  <div className="flex items-center gap-2 text-[var(--text-secondary)]">
                     <Clock size={16} />
                     {new Date(u.createdAt).toLocaleDateString()}
                   </div>
@@ -80,25 +90,25 @@ export default function UserManagement() {
         </table>
       </div>
 
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-gray-100 bg-gray-50">
-          <h2 className="text-xl font-semibold text-gray-900">Client Requirements & Tasks</h2>
-          <p className="text-gray-500 text-sm mt-1">Review what each client needs before assigning the right lead.</p>
+      <div className="overflow-hidden rounded-[1.9rem] border border-[var(--border-strong)] bg-[var(--panel)] shadow-sm">
+        <div className="border-b border-[var(--border-soft)] bg-[var(--surface)]/80 p-6">
+          <h2 className="text-xl font-semibold">Client Requirements & Tasks</h2>
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">Review what each client needs before assigning the right lead.</p>
         </div>
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-[var(--border-soft)]">
           {requests.map((request) => (
             <div key={request._id} className="p-6">
               <div className="flex flex-col md:flex-row md:justify-between gap-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{request.title}</h3>
-                  <p className="text-sm text-gray-500 mt-1">{request.clientName} | {request.clientEmail}</p>
+                  <h3 className="text-lg font-semibold">{request.title}</h3>
+                  <p className="mt-1 text-sm text-[var(--text-secondary)]">{request.clientName} | {request.clientEmail}</p>
                 </div>
                 <div className="flex flex-col md:items-end gap-2">
                   <span className="px-3 py-1 text-xs rounded-full font-semibold bg-blue-100 text-blue-700 w-fit">{request.priority} Priority</span>
                   <select
                     value={request.status}
                     onChange={(e) => updateRequestStatus(request._id, e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+                    className="rounded-lg border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-soft)]"
                   >
                     {['New', 'Reviewed', 'Assigned', 'Completed'].map((status) => (
                       <option key={status} value={status}>{status}</option>
@@ -108,17 +118,17 @@ export default function UserManagement() {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
-                <div className="bg-gray-50 rounded-xl p-4">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Requirement</p>
-                  <p className="text-sm text-gray-600">{request.requirement}</p>
+                <div className="rounded-xl bg-[var(--surface)] p-4">
+                  <p className="mb-2 text-sm font-medium text-[var(--text-secondary)]">Requirement</p>
+                  <p className="text-sm text-[var(--text-primary)]">{request.requirement}</p>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-4">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Task Details</p>
-                  <p className="text-sm text-gray-600">{request.taskDetails}</p>
+                <div className="rounded-xl bg-[var(--surface)] p-4">
+                  <p className="mb-2 text-sm font-medium text-[var(--text-secondary)]">Task Details</p>
+                  <p className="text-sm text-[var(--text-primary)]">{request.taskDetails}</p>
                 </div>
               </div>
 
-              <div className="flex flex-col md:flex-row gap-4 mt-4 text-sm text-gray-500">
+              <div className="mt-4 flex flex-col gap-4 text-sm text-[var(--text-secondary)] md:flex-row">
                 <span>Preferred source: {request.preferredLeadSource}</span>
                 <span>Submitted: {new Date(request.createdAt).toLocaleString()}</span>
               </div>

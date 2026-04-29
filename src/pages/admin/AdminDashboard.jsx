@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import api from '../../api';
 import { Target, TrendingUp, Users, Clock } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import PageHero from '../../components/PageHero';
+
+const adminImage = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({ totalLeads: 0, converted: 0, avgRate: 0, clients: 0 });
@@ -42,10 +45,17 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Admin Overview</h1>
-        <p className="text-gray-500">Welcome back. Here's what's happening with your platform.</p>
-      </div>
+      <PageHero
+        eyebrow="Admin Control"
+        title="Platform overview for lead allocation, performance, and client activity."
+        description="Track active lead entities, conversion momentum, and client growth from one cleaner control room."
+        image={adminImage}
+        stats={[
+          { label: 'lead entities', value: String(stats.totalLeads) },
+          { label: 'clients', value: String(stats.clients) },
+          { label: 'avg conversion', value: `${stats.avgRate}%` }
+        ]}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard title="Total Leads Entities" value={stats.totalLeads} icon={Target} color="blue" />
@@ -54,8 +64,8 @@ export default function AdminDashboard() {
         <StatCard title="Active Clients" value={stats.clients} icon={Users} color="orange" />
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <h2 className="text-lg font-semibold mb-6">Top Leads Conversion Rate</h2>
+      <div className="rounded-[2rem] border border-[var(--border-strong)] bg-[var(--panel)] p-6 shadow-sm">
+        <h2 className="mb-6 text-lg font-semibold">Top Leads Conversion Rate</h2>
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartData}>
@@ -65,11 +75,11 @@ export default function AdminDashboard() {
                   <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#64748b'}} />
-              <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b'}} />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148,163,184,0.22)" />
+              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: 'var(--text-muted)'}} />
+              <YAxis axisLine={false} tickLine={false} tick={{fill: 'var(--text-muted)'}} />
               <Tooltip 
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                contentStyle={{ borderRadius: '16px', border: '1px solid rgba(148,163,184,0.14)', boxShadow: '0 20px 45px -24px rgba(15, 23, 42, 0.28)', background: 'rgba(255,255,255,0.96)' }}
               />
               <Area type="monotone" dataKey="rate" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorRate)" />
             </AreaChart>
@@ -89,14 +99,14 @@ function StatCard({ title, value, icon: Icon, color }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 transition-all hover:shadow-md hover:-translate-y-1">
+    <div className="rounded-[1.75rem] border border-[var(--border-strong)] bg-[var(--panel)] p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
       <div className="flex items-center gap-4">
         <div className={`p-3 rounded-xl ${colors[color]}`}>
           <Icon size={24} />
         </div>
         <div>
-          <p className="text-sm text-gray-500 font-medium">{title}</p>
-          <h3 className="text-2xl font-bold text-gray-900">{value}</h3>
+          <p className="text-sm font-medium text-[var(--text-secondary)]">{title}</p>
+          <h3 className="text-2xl font-bold">{value}</h3>
         </div>
       </div>
     </div>

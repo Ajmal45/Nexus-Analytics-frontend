@@ -4,6 +4,8 @@ import { ArrowRight, BadgeCheck, BriefcaseBusiness, ChartColumnIncreasing, Users
 import heroImage from '../assets/hero.png';
 import ThemeToggle from '../components/ThemeToggle';
 
+const collaborationImage = 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80';
+
 const highlights = [
   {
     icon: BriefcaseBusiness,
@@ -99,11 +101,16 @@ export default function Home() {
         <section className="relative">
           <div className="relative overflow-hidden rounded-[2rem] border border-[var(--border-strong)] bg-[var(--panel)] p-5 shadow-[0_30px_80px_-32px_rgba(15,23,42,0.45)]">
             <div className="absolute inset-x-8 top-6 h-24 rounded-full bg-[var(--brand-soft)] blur-3xl" />
-            <div className="relative rounded-[1.5rem] border border-[var(--border-soft)] bg-[var(--surface)] p-4">
+            <div className="relative grid gap-4 rounded-[1.5rem] border border-[var(--border-soft)] bg-[var(--surface)] p-4">
               <img
                 src={heroImage}
                 alt="Nexus Analytics dashboard preview"
                 className="w-full rounded-[1.2rem] border border-[var(--border-soft)] object-cover shadow-sm"
+              />
+              <img
+                src={collaborationImage}
+                alt="Client and lead collaboration"
+                className="h-40 w-full rounded-[1.2rem] border border-[var(--border-soft)] object-cover shadow-sm"
               />
             </div>
             <div className="relative mt-5 grid gap-4 sm:grid-cols-2">

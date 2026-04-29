@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, UserSquare2, LogOut, BriefcaseBusiness } from 'lucide-react';
+import { LayoutDashboard, Users, UserSquare2, LogOut, BriefcaseBusiness, ClipboardList } from 'lucide-react';
 
 export default function Sidebar({ role, mobileOpen = false, onClose = () => {} }) {
   const navigate = useNavigate();
@@ -19,10 +19,12 @@ export default function Sidebar({ role, mobileOpen = false, onClose = () => {} }
 
   const userLinks = [
     { to: '/user/dashboard', icon: LayoutDashboard, label: 'Client Section' },
+    { to: '/user/tasks', icon: ClipboardList, label: 'My Tasks' },
   ];
 
   const leadLinks = [
     { to: '/lead/dashboard', icon: BriefcaseBusiness, label: 'Lead Workspace' },
+    { to: '/lead/tasks', icon: ClipboardList, label: 'Task Page' },
   ];
 
   const links = role === 'admin' ? adminLinks : role === 'lead' ? leadLinks : userLinks;

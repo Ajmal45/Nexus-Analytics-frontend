@@ -3,6 +3,9 @@ import api from '../../api';
 import toast from 'react-hot-toast';
 import { Plus, Edit2, UserPlus, Trash2, Ban, CheckCircle2, X } from 'lucide-react';
 import LeadFormFields from '../../components/LeadFormFields';
+import PageHero from '../../components/PageHero';
+
+const adminLeadImage = 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80';
 
 export default function LeadManagement() {
   const [leads, setLeads] = useState([]);
@@ -192,26 +195,32 @@ export default function LeadManagement() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Leads Management</h1>
-          <p className="text-gray-500">Add, configure, assign, and approve lead requests from clients.</p>
-        </div>
+      <PageHero
+        eyebrow="Lead Management"
+        title="Create, refine, and assign high-value leads with a better admin workflow."
+        description="This control area combines lead creation, assignment, and approval handling so you can keep client delivery moving without losing visibility."
+        image={adminLeadImage}
+        stats={[
+          { label: 'leads', value: String(leads.length) },
+          { label: 'clients', value: String(users.filter((user) => user.role === 'user').length) },
+          { label: 'requests', value: String(selectionRequests.length) }
+        ]}
+      >
         <button
           onClick={() => {
             resetForm();
             setShowAddModal(true);
           }}
-          className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition-colors hover:bg-blue-700"
+          className="flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-900"
         >
           <Plus size={18} /> Add Lead
         </button>
-      </div>
+      </PageHero>
 
-      <div className="overflow-x-auto rounded-2xl border border-gray-100 bg-white shadow-sm">
+      <div className="overflow-x-auto rounded-[1.9rem] border border-[var(--border-strong)] bg-[var(--panel)] shadow-sm">
         <table className="w-full border-collapse whitespace-nowrap text-left">
           <thead>
-            <tr className="border-b border-gray-100 bg-gray-50 text-xs font-semibold uppercase tracking-wider text-gray-500">
+            <tr className="border-b border-[var(--border-soft)] bg-[var(--surface)]/80 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
               <th className="py-4 pl-6 pr-4">Lead / Source</th>
               <th className="px-4 py-4">Conv. Rate</th>
               <th className="px-4 py-4">Stats</th>
@@ -221,22 +230,22 @@ export default function LeadManagement() {
           </thead>
           <tbody className="divide-y divide-gray-50 text-sm">
             {leads.map((lead) => (
-              <tr key={lead._id} className="transition-colors hover:bg-gray-50/50">
+              <tr key={lead._id} className="transition-colors hover:bg-[var(--brand-soft)]/40">
                 <td className="py-4 pl-6 pr-4">
-                  <div className="font-semibold text-gray-900">{lead.leadName}</div>
-                  <div className="text-xs text-gray-500">{lead.leadSource}</div>
+                  <div className="font-semibold">{lead.leadName}</div>
+                  <div className="text-xs text-[var(--text-secondary)]">{lead.leadSource}</div>
                 </td>
                 <td className="px-4 py-4">
                   <div className="flex items-center gap-2">
                     <div className="h-2 w-16 overflow-hidden rounded-full bg-gray-100">
                       <div className="h-full rounded-full bg-emerald-500" style={{ width: `${lead.conversionRate || 0}%` }} />
                     </div>
-                    <span className="font-medium text-gray-700">{lead.conversionRate?.toFixed(1) || 0}%</span>
+                    <span className="font-medium text-[var(--text-secondary)]">{lead.conversionRate?.toFixed(1) || 0}%</span>
                   </div>
                 </td>
                 <td className="px-4 py-4">
-                  <div className="text-gray-700">{lead.leadsConverted} / {lead.totalLeads} cols</div>
-                  <div className="text-xs text-gray-500">{lead.timeTakenDays} days, {lead.experience}y exp</div>
+                  <div className="text-[var(--text-primary)]">{lead.leadsConverted} / {lead.totalLeads} cols</div>
+                  <div className="text-xs text-[var(--text-secondary)]">{lead.timeTakenDays} days, {lead.experience}y exp</div>
                 </td>
                 <td className="px-4 py-4">
                   <div className="flex flex-col items-start gap-1">
@@ -258,7 +267,7 @@ export default function LeadManagement() {
                     {lead.assignedToName ? (
                       <span className="mt-1 rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-600">Assigned to: {lead.assignedToName}</span>
                     ) : (
-                      <span className="mt-1 rounded-md border border-gray-100 bg-gray-50 px-2 py-0.5 text-xs font-medium text-gray-400">Unassigned</span>
+                      <span className="mt-1 rounded-md border border-[var(--border-soft)] bg-[var(--surface)] px-2 py-0.5 text-xs font-medium text-[var(--text-muted)]">Unassigned</span>
                     )}
                   </div>
                 </td>
@@ -279,19 +288,19 @@ export default function LeadManagement() {
         </table>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
-        <div className="border-b border-gray-100 bg-gray-50 p-6">
-          <h2 className="text-xl font-semibold text-gray-900">Lead Selection Requests</h2>
-          <p className="mt-1 text-sm text-gray-500">Approve or reject the requests that clients send from the user section.</p>
+      <div className="overflow-hidden rounded-[1.9rem] border border-[var(--border-strong)] bg-[var(--panel)] shadow-sm">
+        <div className="border-b border-[var(--border-soft)] bg-[var(--surface)]/80 p-6">
+          <h2 className="text-xl font-semibold">Lead Selection Requests</h2>
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">Approve or reject the requests that clients send from the user section.</p>
         </div>
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-[var(--border-soft)]">
           {selectionRequests.map((request) => (
             <div key={request._id} className="p-6">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{request.leadName}</h3>
-                  <p className="mt-1 text-sm text-gray-500">{request.clientName} | {request.clientEmail}</p>
-                  <p className="mt-2 text-sm text-gray-600">Lead source: {request.leadSource}</p>
+                  <h3 className="text-lg font-semibold">{request.leadName}</h3>
+                  <p className="mt-1 text-sm text-[var(--text-secondary)]">{request.clientName} | {request.clientEmail}</p>
+                  <p className="mt-2 text-sm text-[var(--text-secondary)]">Lead source: {request.leadSource}</p>
                 </div>
                 <div className="flex flex-col gap-2 lg:items-end">
                   <span className={`w-fit rounded-full px-3 py-1 text-xs font-semibold ${
@@ -303,12 +312,12 @@ export default function LeadManagement() {
                   }`}>
                     {request.status}
                   </span>
-                  <span className="text-xs text-gray-500">Requested {new Date(request.createdAt).toLocaleString()}</span>
+                  <span className="text-xs text-[var(--text-muted)]">Requested {new Date(request.createdAt).toLocaleString()}</span>
                 </div>
               </div>
 
               {request.adminNote ? (
-                <div className="mt-4 rounded-xl bg-gray-50 p-4 text-sm text-gray-700">
+                <div className="mt-4 rounded-xl bg-[var(--surface)] p-4 text-sm text-[var(--text-primary)]">
                   <span className="font-medium">Admin note:</span> {request.adminNote}
                 </div>
               ) : null}
@@ -339,7 +348,7 @@ export default function LeadManagement() {
 
       {showAddModal ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-4 shadow-2xl duration-200 animate-in zoom-in-95 sm:p-6">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-[var(--panel)] p-4 shadow-2xl duration-200 animate-in zoom-in-95 sm:p-6">
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
                 <button
@@ -347,27 +356,27 @@ export default function LeadManagement() {
                     setShowAddModal(false);
                     resetForm();
                   }}
-                  className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:border-blue-300 hover:text-blue-600"
+                  className="inline-flex items-center gap-2 rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:border-[var(--brand)] hover:text-[var(--brand)]"
                 >
                   Back
                 </button>
-                <h2 className="text-2xl font-bold text-gray-900">{isEditing ? 'Edit Lead' : 'Add New Lead'}</h2>
+                <h2 className="text-2xl font-bold">{isEditing ? 'Edit Lead' : 'Add New Lead'}</h2>
               </div>
               <button
                 onClick={() => {
                   setShowAddModal(false);
                   resetForm();
                 }}
-                className="self-end rounded-full bg-gray-100 p-2 text-gray-400 hover:text-gray-600 sm:self-auto"
+                className="self-end rounded-full bg-[var(--surface)] p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] sm:self-auto"
               >
                 <X size={20} />
               </button>
             </div>
             <form onSubmit={handleSaveLead} className="space-y-4">
               <LeadFormFields formData={formData} onChange={handleInputChange} />
-              <div className="flex flex-col-reverse gap-3 border-t border-gray-100 pt-4 sm:flex-row sm:justify-end">
-                <button type="button" onClick={() => setShowAddModal(false)} className="rounded-xl px-5 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-100">Cancel</button>
-                <button type="submit" className="rounded-xl bg-blue-600 px-5 py-2 font-medium text-white transition-colors hover:bg-blue-700">
+              <div className="flex flex-col-reverse gap-3 border-t border-[var(--border-soft)] pt-4 sm:flex-row sm:justify-end">
+                <button type="button" onClick={() => setShowAddModal(false)} className="rounded-xl px-5 py-2 font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface)]">Cancel</button>
+                <button type="submit" className="rounded-xl bg-[var(--brand)] px-5 py-2 font-medium text-white transition-colors hover:brightness-110">
                   {isEditing ? 'Save Changes' : 'Create Lead'}
                 </button>
               </div>
@@ -378,27 +387,27 @@ export default function LeadManagement() {
 
       {showAssignModal ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-          <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-4 shadow-2xl duration-200 animate-in zoom-in-95 sm:p-6">
+          <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl bg-[var(--panel)] p-4 shadow-2xl duration-200 animate-in zoom-in-95 sm:p-6">
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
-                <button onClick={() => setShowAssignModal(false)} className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:border-blue-300 hover:text-blue-600">
+                <button onClick={() => setShowAssignModal(false)} className="inline-flex items-center gap-2 rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:border-[var(--brand)] hover:text-[var(--brand)]">
                   Back
                 </button>
-                <h2 className="text-xl font-bold text-gray-900">Assign to Client</h2>
+                <h2 className="text-xl font-bold">Assign to Client</h2>
               </div>
-              <button onClick={() => setShowAssignModal(false)} className="self-end rounded-full bg-gray-100 p-2 text-gray-400 hover:text-gray-600 sm:self-auto"><X size={20} /></button>
+              <button onClick={() => setShowAssignModal(false)} className="self-end rounded-full bg-[var(--surface)] p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] sm:self-auto"><X size={20} /></button>
             </div>
             <div className="space-y-2">
-              <p className="mb-4 border-b border-gray-100 pb-2 text-sm">
-                Choose a client below to take ownership of <span className="font-semibold text-blue-600">{currentLead?.leadName}</span>.
+              <p className="mb-4 border-b border-[var(--border-soft)] pb-2 text-sm text-[var(--text-secondary)]">
+                Choose a client below to take ownership of <span className="font-semibold text-[var(--brand)]">{currentLead?.leadName}</span>.
               </p>
               {users.filter((user) => user.role === 'user').map((user) => (
-                <div key={user._id} className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 p-3 transition-colors hover:border-blue-300">
+                <div key={user._id} className="flex items-center justify-between rounded-xl border border-[var(--border-soft)] bg-[var(--surface)] p-3 transition-colors hover:border-[var(--brand)]">
                   <div>
-                    <div className="text-sm font-semibold text-gray-900">{user.name}</div>
-                    <div className="text-xs text-gray-500">{user.email}</div>
+                    <div className="text-sm font-semibold">{user.name}</div>
+                    <div className="text-xs text-[var(--text-secondary)]">{user.email}</div>
                   </div>
-                  <button onClick={() => handleAssign(user._id, user.name)} className="rounded-lg bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-200">
+                  <button onClick={() => handleAssign(user._id, user.name)} className="rounded-lg bg-[var(--brand-soft)] px-4 py-1.5 text-sm font-medium text-[var(--brand)] transition-colors hover:brightness-95">
                     Assign
                   </button>
                 </div>

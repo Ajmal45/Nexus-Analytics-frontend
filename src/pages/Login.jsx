@@ -6,6 +6,8 @@ import toast from 'react-hot-toast';
 import heroImage from '../assets/hero.png';
 import ThemeToggle from '../components/ThemeToggle';
 
+const teamImage = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80';
+
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -94,8 +96,9 @@ export default function Login() {
           <p className="mt-5 max-w-xl text-lg leading-8 text-[var(--text-secondary)]">
             Sign in to manage lead assignments, collect client requirements, and work from a dashboard designed for real delivery teams.
           </p>
-          <div className="mt-8 overflow-hidden rounded-[1.6rem] border border-[var(--border-soft)] bg-[var(--surface)] p-3">
+          <div className="mt-8 grid gap-3 overflow-hidden rounded-[1.6rem] border border-[var(--border-soft)] bg-[var(--surface)] p-3">
             <img src={heroImage} alt="Nexus Analytics dashboard" className="w-full rounded-[1.2rem] object-cover" />
+            <img src={teamImage} alt="Lead and client teamwork" className="h-44 w-full rounded-[1.2rem] object-cover" />
           </div>
         </section>
 

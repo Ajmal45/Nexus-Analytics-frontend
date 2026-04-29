@@ -3,6 +3,9 @@ import api from '../../api';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Camera, Mail, Phone, Building2, BadgeInfo } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import PageHero from '../../components/PageHero';
+
+const profileImage = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80';
 
 const defaultProfile = {
   name: '',
@@ -120,20 +123,26 @@ export default function Profile() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <div className="rounded-[2rem] border border-[var(--border-strong)] bg-[var(--panel)] p-5 shadow-sm sm:p-8">
-        <div className="mb-5">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--border-strong)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] transition hover:border-[var(--brand)] hover:text-[var(--brand)]"
-          >
-            <ArrowLeft size={16} />
-            Back
-          </button>
-        </div>
-        <h1 className="text-3xl font-semibold">My Profile</h1>
-        <p className="mt-2 text-[var(--text-secondary)]">View and edit your account details, professional info, and profile picture.</p>
-      </div>
+      <PageHero
+        eyebrow="Profile Settings"
+        title="Manage your account identity, business details, and profile presence."
+        description="Keep your profile updated with a photo, company information, and a short bio so the workspace feels personal and professional."
+        image={profile.profileImage || profileImage}
+        stats={[
+          { label: 'account', value: profile.name || 'Profile' },
+          { label: 'company', value: profile.company || 'Not set' },
+          { label: 'photo', value: profile.profileImage ? 'Uploaded' : 'Pending' }
+        ]}
+      >
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white"
+        >
+          <ArrowLeft size={16} />
+          Back
+        </button>
+      </PageHero>
 
       <form onSubmit={handleSave} className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
         <div className="rounded-[2rem] border border-[var(--border-strong)] bg-[var(--panel)] p-5 shadow-sm sm:p-6">

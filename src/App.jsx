@@ -11,6 +11,8 @@ import UserManagement from './pages/admin/UserManagement';
 import ClientDashboard from './pages/user/ClientDashboard';
 import Profile from './pages/user/Profile';
 import LeadWorkspace from './pages/lead/LeadWorkspace';
+import UserTaskPage from './pages/user/TaskPage';
+import LeadTaskPage from './pages/lead/TaskPage';
 import { ThemeProvider, useTheme } from './components/ThemeProvider';
 
 function AppShell() {
@@ -40,12 +42,14 @@ function AppShell() {
           {/* User Routes */}
           <Route path="/user" element={<Layout allowedRole="user" />}>
             <Route path="dashboard" element={<ClientDashboard />} />
+            <Route path="tasks" element={<UserTaskPage />} />
             <Route path="profile" element={<Profile />} />
           </Route>
 
           {/* Lead Routes */}
           <Route path="/lead" element={<Layout allowedRole="lead" />}>
             <Route path="dashboard" element={<LeadWorkspace />} />
+            <Route path="tasks" element={<LeadTaskPage />} />
             <Route path="profile" element={<Profile />} />
           </Route>
 

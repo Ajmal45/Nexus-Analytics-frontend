@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Edit2, Gauge, Plus, Sparkles, Trash2, UserCircle2 } from 'lucide-react';
+import { ArrowLeft, Edit2, Gauge, Plus, Trash2, UserCircle2 } from 'lucide-react';
 import LeadFormFields from '../../components/LeadFormFields';
 import { useNavigate } from 'react-router-dom';
+import PageHero from '../../components/PageHero';
+import { useRef } from 'react';
+
+const leadImage = 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80';
 
 const defaultForm = {
   leadName: '',
@@ -20,6 +24,7 @@ const defaultForm = {
 
 export default function LeadWorkspace() {
   const navigate = useNavigate();
+  const formSectionRef = useRef(null);
   const [leads, setLeads] = useState([]);
   const [profile, setProfile] = useState(null);
   const [formData, setFormData] = useState(defaultForm);
@@ -61,6 +66,10 @@ export default function LeadWorkspace() {
     setEditingLead(null);
   };
 
+  const scrollToFormSection = () => {
+    formSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const openEdit = (lead) => {
     setEditingLead(lead);
     setFormData({
@@ -75,7 +84,7 @@ export default function LeadWorkspace() {
       skills: Array.isArray(lead.skills) ? lead.skills.join(', ') : '',
       notes: lead.notes || ''
     });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToFormSection();
   };
 
   const handleSave = async (e) => {
@@ -123,40 +132,39 @@ export default function LeadWorkspace() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <div className="rounded-[2rem] border border-[var(--border-strong)] bg-[var(--panel)] p-5 shadow-sm sm:p-8">
-        <div className="mb-5">
+      <PageHero
+        eyebrow="Lead Workspace"
+        title={profile?.name ? `${profile.name}'s lead page for performance, profile, and opportunity delivery.` : 'Lead workspace for performance, profile, and opportunity delivery.'}
+        description="Manage your professional lead identity, showcase conversion strength, and keep your lead data ready for assignments and client work."
+        image={leadImage}
+        stats={[
+          { label: 'profiles', value: String(leads.length) },
+          { label: 'avg conversion', value: `${averagePerformance}%` },
+          { label: 'best lead', value: bestLead?.leadName || 'N/A' }
+        ]}
+      >
+        <div className="flex flex-wrap gap-3">
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--border-strong)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] transition hover:border-[var(--brand)] hover:text-[var(--brand)]"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white"
           >
             <ArrowLeft size={16} />
             Back
           </button>
-        </div>
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-4">
-            <div className="rounded-2xl bg-[var(--brand-soft)] p-4 text-[var(--brand)]">
-              <UserCircle2 size={28} />
-            </div>
-            <div>
-              <h1 className="text-3xl font-semibold">{profile?.name ? `${profile.name}'s Lead Page` : 'Lead Workspace'}</h1>
-              <p className="mt-2 text-[var(--text-secondary)]">See your own account, review your performance, and add your professional lead data in one place.</p>
-            </div>
-          </div>
           <button
             type="button"
             onClick={() => {
               resetForm();
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              scrollToFormSection();
             }}
-            className="inline-flex items-center gap-2 rounded-xl bg-[var(--brand)] px-5 py-3 text-sm font-semibold text-white"
+            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-900"
           >
             <Plus size={18} />
             Add Your Data
           </button>
         </div>
-      </div>
+      </PageHero>
 
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="rounded-[2rem] border border-[var(--border-strong)] bg-[var(--panel)] p-5 shadow-sm sm:p-6">
@@ -197,7 +205,7 @@ export default function LeadWorkspace() {
         </div>
       </div>
 
-      <div className="rounded-[2rem] border border-[var(--border-strong)] bg-[var(--panel)] p-4 shadow-sm sm:p-6">
+      <div ref={formSectionRef} className="rounded-[2rem] border border-[var(--border-strong)] bg-[var(--panel)] p-4 shadow-sm sm:p-6">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-2xl font-semibold">{editingLead ? 'Edit Your Data' : 'Add Your Data'}</h2>
